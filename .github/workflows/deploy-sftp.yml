@@ -1,0 +1,108 @@
+name: Build and Deploy Astro Site via SFTP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build Astro Site
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Yarn
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Cache Astro build
+        uses: actions/cache@v3
+        with:
+          path: |
+            .astro
+            dist
+          key: ${{ runner.os }}-astro-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/*.{astro,ts,tsx,js,jsx}') }}
+          restore-keys: |
+            ${{ runner.os }}-astro-${{ hashFiles('**/yarn.lock') }}-
+            ${{ runner.os }}-astro-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build Astro site
+        run: yarn build
+
+      # Patch entry.mjs so client/server paths are resolved at runtime (not the build runner path)
+      - name: Patch server entry for deploy
+        run: |
+          f=dist/server/entry.mjs
+          sed -i 's|"client": "file://[^"]*",|"client": new URL("../client/", import.meta.url).href,|' "$f"
+          sed -i 's|"server": "file://[^"]*",|"server": new URL(".", import.meta.url).href,|' "$f"
+          grep -E '"client"|"server"' "$f" || true
+
+      # Passenger requires an index.html in the doc root; keep it minimal so proxy-to-Node can serve the real page
+      - name: Add root index.html for Apache/Passenger
+        run: |
+          printf '%s\n' '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body></body></html>' > dist/index.html
+
+      # Tell Phusion Passenger to run the Astro Node server (default is app.js)
+      - name: Add Passenger config for Node startup
+        run: |
+          echo '{"app_type":"node","startup_file":"server/entry.mjs"}' > dist/Passengerfile.json
+
+      - name: Include package.json in deploy
+        run: cp package.json dist/package.json
+
+      - name: List output directory
+        run: |
+          ls -la
+          ls -la ./dist || echo "Dist directory not found"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: ./dist/
+          retention-days: 1
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy via SFTP
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: ./dist
+
+      - name: Deploy via SFTP to a Plesk server
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: ${{ secrets.SFTP_HOST }}
+          port: ${{ secrets.SFTP_PORT || 22 }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          ssh_private_key: ${{ secrets.SFTP_SSH_KEY }}
+          local_path: "./dist/*"
+          remote_path: "/var/www/vhosts/${{ secrets.PLESK_DOMAIN }}/httpdocs"
+          sftp_only: false
