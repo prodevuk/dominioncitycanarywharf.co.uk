@@ -1,0 +1,43 @@
+---
+import revDavidImage from '../assets/images/rev_david.png';
+
+const quote = "We are not just called to demonstrate God's power. We are also called to demonstrate God's character";
+const attribution = "Dr. David Ogbueli";
+const role = "Lead Pastor, Dominion City Global";
+
+const imageSrc = typeof revDavidImage === 'string' ? revDavidImage : revDavidImage.src;
+---
+
+<section class="py-[var(--section-padding-y)] px-[var(--section-padding-x)] bg-dc-cream scroll-mt-20" aria-label="Quote from leadership">
+  <div class="mx-auto max-w-[var(--content-max)]">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 items-center">
+      <!-- Photo -->
+      <div class="md:col-span-4 flex justify-center md:justify-end order-2 md:order-1">
+        <div class="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-2xl overflow-hidden bg-dc-blue/10 ring-2 ring-[rgb(var(--dc-blue))]/20 shadow-lg flex-shrink-0">
+          <img
+            src={imageSrc}
+            alt="Dr. David Ogbueli"
+            class="w-full h-full object-cover"
+            width="256"
+            height="256"
+          />
+        </div>
+      </div>
+
+      <!-- Quote + attribution -->
+      <div class="md:col-span-8 order-1 md:order-2">
+        <blockquote class="text-center md:text-left">
+          <p class="text-2xl sm:text-3xl md:text-[1.75rem] font-semibold text-[rgb(var(--dc-ink))] leading-snug tracking-tight">
+            “{quote}”
+          </p>
+          <footer class="mt-8 flex flex-col sm:flex-row sm:items-center gap-4 md:gap-6 md:mt-10">
+            <cite class="not-italic">
+              <span class="block text-lg font-bold text-dc-blue">{attribution}</span>
+              <span class="block text-sm text-[rgb(var(--dc-ink))]/70 mt-0.5">{role}</span>
+            </cite>
+          </footer>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>

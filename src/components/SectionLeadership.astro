@@ -2,27 +2,57 @@
 const leadPastor = {
   name: "Pastor Chimdi",
   role: "Lead Pastor",
-  // Placeholder for future image: /images/pastor-chimdi.jpg
+  // When image is ready, add: image: "/images/pastor-chimdi.jpg" and use in .profile below
 };
+const tagline = "Under the mandate to raise kingdom-minded leaders";
+const supporting = "Leading Dominion City Canary Wharf in raising leaders that transform society.";
 ---
 
-<section id="leadership" class="py-[var(--section-padding-y)] px-[var(--section-padding-x)] bg-dc-cream scroll-mt-20">
-  <div class="mx-auto max-w-[var(--content-max)]">
-    <h2 class="text-3xl font-bold text-dc-blue sm:text-4xl text-center mb-2">
-      Leadership
-    </h2>
-    <p class="text-center text-[rgb(var(--dc-ink))]/80 mb-12">
-      Under the mandate to raise kingdom-minded leaders
-    </p>
-    <div class="flex flex-col items-center max-w-md mx-auto text-center">
-      <div class="w-32 h-32 rounded-full bg-dc-blue/20 flex items-center justify-center mb-4" aria-hidden="true">
-        <span class="text-4xl font-bold text-dc-blue">{leadPastor.name.charAt(0)}</span>
+<section id="leadership" class="scroll-mt-20">
+  <!-- Full-bleed blue: split layout — profile + copy -->
+  <div class="bg-dc-blue text-white overflow-hidden">
+    <div class="mx-auto max-w-[var(--content-max)]">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-0 min-h-[28rem] md:min-h-[32rem]">
+        <!-- Left: profile (visual anchor) -->
+        <div class="md:col-span-5 flex items-center justify-center p-8 md:p-12 order-2 md:order-1">
+          <div
+            class="profile w-56 h-56 md:w-72 md:h-72 rounded-full bg-white/10 flex items-center justify-center ring-4 ring-white/20 backdrop-blur-sm"
+            aria-hidden="true"
+          >
+            <span class="text-6xl md:text-8xl font-bold text-white/90">{leadPastor.name.charAt(0)}</span>
+            <!-- When image is ready, replace inner content with:
+              <img src={leadPastor.image} alt="" class="w-full h-full object-cover rounded-full" width="288" height="288" />
+            -->
+          </div>
+        </div>
+
+        <!-- Right: name, role, tagline -->
+        <div class="md:col-span-7 flex flex-col justify-center px-[var(--section-padding-x)] py-12 md:py-16 md:pl-8 order-1 md:order-2">
+          <p class="text-xs uppercase tracking-[0.25em] text-white/60 font-semibold mb-3">
+            Leadership
+          </p>
+          <p class="text-lg md:text-xl text-white/80 font-medium mb-2">
+            {leadPastor.role}
+          </p>
+          <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight">
+            {leadPastor.name}
+          </h2>
+          <p class="mt-6 text-lg md:text-xl text-white/90 max-w-lg leading-relaxed">
+            {tagline}
+          </p>
+          <p class="mt-4 text-white/70 text-base max-w-lg">
+            {supporting}
+          </p>
+        </div>
       </div>
-      <h3 class="text-xl font-semibold text-[rgb(var(--dc-ink))]">
-        {leadPastor.name}
-      </h3>
-      <p class="text-dc-blue font-medium">
-        {leadPastor.role}
+    </div>
+  </div>
+
+  <!-- Optional: future leaders strip (placeholder for growth) -->
+  <div class="bg-white border-b border-[rgb(var(--dc-blue))]/10">
+    <div class="mx-auto max-w-[var(--content-max)] px-[var(--section-padding-x)] py-8">
+      <p class="text-center text-sm text-[rgb(var(--dc-ink))]/60">
+        Meet our team in person — join us any Sunday at 10AM.
       </p>
     </div>
   </div>

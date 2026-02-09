@@ -1,26 +1,41 @@
 ---
 const stats = [
-  { value: "5,000", label: "Thriving members" },
-  { value: "10,000", label: "Seat multi-complex" },
-  { value: "10M", label: "Lives to impact for Christ across the UK" },
+  { value: "5,000", label: "Thriving members", sub: "Well-grounded priests and kings" },
+  { value: "10,000", label: "Seat multi-complex", sub: "In the heart of the city" },
+  { value: "10M", label: "Lives to impact", sub: "For Christ across the UK" },
 ];
+const headline = "A model church in the heart of the city";
+const lead = "We equip every generation—babies, young and old—to excel in their divine calling, balancing the Spirit with leadership and societal impact.";
 ---
 
-<section id="about" class="py-[var(--section-padding-y)] px-[var(--section-padding-x)] bg-white scroll-mt-20">
-  <div class="mx-auto max-w-[var(--content-max)]">
-    <h2 class="text-3xl font-bold text-dc-blue sm:text-4xl text-center mb-4">
-      A model church in the heart of the city
-    </h2>
-    <p class="text-center text-lg text-[rgb(var(--dc-ink))]/90 max-w-2xl mx-auto mb-14">
-      We equip every generation—babies, young and old—to excel in their divine calling, balancing the Spirit with leadership and societal impact.
-    </p>
-    <ul class="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 list-none p-0 m-0" role="list">
-      {stats.map(({ value, label }) => (
-        <li class="text-center p-6 rounded-xl bg-dc-cream border border-[rgb(var(--dc-blue))]/10">
-          <span class="block text-3xl sm:text-4xl font-bold text-dc-blue" aria-hidden="true">{value}</span>
-          <span class="mt-2 block text-[rgb(var(--dc-ink))]/80 font-medium">{label}</span>
-        </li>
-      ))}
-    </ul>
+<section id="about" class="scroll-mt-20 overflow-hidden">
+  <!-- Full-bleed lead block -->
+  <div class="bg-dc-blue text-white py-[var(--section-padding-y)] px-[var(--section-padding-x)]">
+    <div class="mx-auto max-w-[var(--content-max)] text-center">
+      <p class="text-sm uppercase tracking-[0.2em] text-white/70 mb-3">
+        Who we are
+      </p>
+      <h2 class="text-3xl font-bold sm:text-4xl md:text-[2.75rem] leading-tight max-w-3xl mx-auto">
+        {headline}
+      </h2>
+      <p class="mt-6 text-lg text-white/90 max-w-2xl mx-auto leading-relaxed">
+        {lead}
+      </p>
+    </div>
+  </div>
+
+  <!-- Stats strip: anchored to bottom of blue, overlapping into cream -->
+  <div class="relative -mt-12 sm:-mt-16 px-[var(--section-padding-x)] pb-[var(--section-padding-y)]">
+    <div class="mx-auto max-w-[var(--content-max)]">
+      <ul class="grid grid-cols-1 sm:grid-cols-3 gap-6 list-none p-0 m-0" role="list">
+        {stats.map(({ value, label, sub }) => (
+          <li class="group relative bg-white rounded-2xl shadow-lg border border-[rgb(var(--dc-blue))]/10 p-8 text-center hover:shadow-xl hover:border-[rgb(var(--dc-blue))]/20 transition-all duration-300">
+            <span class="block text-4xl sm:text-5xl font-bold text-dc-blue tracking-tight" aria-hidden="true">{value}</span>
+            <span class="mt-2 block text-lg font-semibold text-[rgb(var(--dc-ink))]">{label}</span>
+            <span class="mt-1 block text-sm text-[rgb(var(--dc-ink))]/70">{sub}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 </section>
