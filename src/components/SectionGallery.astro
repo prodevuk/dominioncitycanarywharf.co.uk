@@ -1,0 +1,140 @@
+---
+import yearOfEagleImage from '../assets/images/year_of_eagle.png';
+import revDavidImage from '../assets/images/rev_david.png';
+import dcLogoImage from '../assets/images/dc_logo.png';
+
+const getSrc = (img: { src: string } | string) => (typeof img === 'string' ? img : img.src);
+
+const galleryImages = [
+  { src: getSrc(yearOfEagleImage), alt: 'Year of the Eagle' },
+  { src: getSrc(revDavidImage), alt: 'Dr. David Ogbueli' },
+  { src: getSrc(dcLogoImage), alt: 'Dominion City' },
+  { src: getSrc(yearOfEagleImage), alt: 'Year of the Eagle' },
+  { src: getSrc(revDavidImage), alt: 'Community' },
+  { src: getSrc(dcLogoImage), alt: 'Dominion City' },
+  { src: getSrc(yearOfEagleImage), alt: '2026' },
+  { src: getSrc(revDavidImage), alt: 'Leadership' },
+  { src: getSrc(dcLogoImage), alt: 'Dominion City' },
+  { src: getSrc(yearOfEagleImage), alt: 'Our year of Dominion' },
+];
+
+const totalPages = 3; // 4 images per page on lg: pages 0 (0-3), 1 (4-7), 2 (8-9)
+---
+
+<section class="py-[var(--section-padding-y)] px-[var(--section-padding-x)] bg-white scroll-mt-20" aria-labelledby="gallery-heading">
+  <div class="mx-auto max-w-[var(--content-max)]">
+    <h2 id="gallery-heading" class="text-3xl font-bold text-dc-blue sm:text-4xl text-center mb-2">
+      Gallery
+    </h2>
+    <p class="text-center text-[rgb(var(--dc-ink))]/70 text-sm mb-10">
+      Moments from our community
+    </p>
+
+    <!-- 4 square images visible on lg; sliding track -->
+    <div class="gallery-carousel relative w-full overflow-hidden rounded-2xl bg-[rgb(var(--dc-ink))]/5" aria-label="Photo gallery carousel">
+      <!-- Container: 4:1 aspect so 4 squares fit (each square = 1 unit) -->
+      <div class="relative w-full pt-[25%]">
+        <div
+          class="gallery-track absolute top-0 left-0 flex h-full w-[250%] transition-transform duration-500 ease-out"
+          style="transform: translateX(0)"
+        >
+          {galleryImages.map((image, index) => (
+            <div class="gallery-cell flex-[0_0_10%] h-full p-1 sm:p-2">
+              <div class="h-full w-full overflow-hidden rounded-lg bg-[rgb(var(--dc-ink))]/10 aspect-square">
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  class="h-full w-full object-cover block"
+                  width="400"
+                  height="400"
+                  loading={index < 4 ? 'eager' : 'lazy'}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {galleryImages.length > 1 && (
+          <>
+            <button
+              type="button"
+              class="gallery-prev absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full p-2 bg-white/90 text-[rgb(var(--dc-ink))] shadow-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-dc-blue focus:ring-offset-2 transition-colors"
+              aria-label="Previous"
+            >
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="gallery-next absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full p-2 bg-white/90 text-[rgb(var(--dc-ink))] shadow-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-dc-blue focus:ring-offset-2 transition-colors"
+              aria-label="Next"
+            >
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            <div class="gallery-dots absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-2" role="tablist" aria-label="Gallery pages">
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <button
+                  type="button"
+                  class="gallery-dot h-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[rgb(var(--dc-ink))]/30"
+                  style={index === 0 ? 'background: rgb(30 58 138); width: 1.5rem' : 'background: rgba(30,58,138,0.3); width: 0.5rem'}
+                  aria-label={`Page ${index + 1}`}
+                  aria-selected={index === 0}
+                  role="tab"
+                  data-index={index}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ totalPages }}>
+  (function () {
+    const container = document.querySelector('.gallery-carousel');
+    if (!container) return;
+
+    const track = container.querySelector('.gallery-track');
+    const dots = container.querySelectorAll('.gallery-dot');
+    const nextBtn = container.querySelector('.gallery-next');
+    const prevBtn = container.querySelector('.gallery-prev');
+    if (!track) return;
+
+    let currentPage = 0;
+
+    function goToPage(page) {
+      currentPage = (page + totalPages) % totalPages;
+      track.style.transform = `translateX(-${currentPage * 100}%)`;
+      dots.forEach((el, i) => {
+        el.style.background = i === currentPage ? 'rgb(30 58 138)' : 'rgba(30,58,138,0.3)';
+        el.style.width = i === currentPage ? '1.5rem' : '0.5rem';
+        el.setAttribute('aria-selected', i === currentPage ? 'true' : 'false');
+      });
+      resetTimer();
+    }
+
+    function next() {
+      goToPage(currentPage + 1);
+    }
+
+    let timer = null;
+    function resetTimer() {
+      if (timer) clearInterval(timer);
+      if (totalPages > 1) timer = setInterval(next, 5000);
+    }
+
+    prevBtn?.addEventListener('click', () => goToPage(currentPage - 1));
+    nextBtn?.addEventListener('click', () => goToPage(currentPage + 1));
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => goToPage(i));
+    });
+
+    resetTimer();
+  })();
+</script>

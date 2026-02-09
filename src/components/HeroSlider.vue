@@ -66,7 +66,7 @@ onUnmounted(() => {
         class="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500"
         :class="[
           index === current ? 'opacity-100 z-0' : 'opacity-0 z-0 pointer-events-none',
-          slide.type === 'image' ? 'p-0' : 'px-[var(--section-padding-x)] pt-24 pb-16 text-center',
+          slide.type === 'image' ? 'p-0' : 'px-[var(--section-padding-x)] py-16 text-center',
         ]"
         :aria-hidden="index !== current"
         :role="index === current ? 'group' : undefined"

@@ -4,6 +4,7 @@ import Header from '../components/Header.vue';
 import HeroSlider from '../components/HeroSlider.vue';
 import VisionDeclaration from '../components/VisionDeclaration.astro';
 import SectionAbout from '../components/SectionAbout.astro';
+import SectionGallery from '../components/SectionGallery.astro';
 import SectionLeadership from '../components/SectionLeadership.astro';
 import SectionQuote from '../components/SectionQuote.astro';
 import SectionCTA from '../components/SectionCTA.astro';
@@ -18,11 +19,12 @@ import yearOfEagleImage from '../assets/images/year_of_eagle.png';
   <Header client:visible />
   <main id="main-content">
     <HeroSlider client:visible yearOfEagleSrc={typeof yearOfEagleImage === 'string' ? yearOfEagleImage : yearOfEagleImage.src} />
+    <SectionCTA />
     <VisionDeclaration />
     <SectionAbout />
+    <SectionGallery />
     <SectionLeadership />
     <SectionQuote />
-    <SectionCTA />
   </main>
   <Footer />
 </BaseLayout>

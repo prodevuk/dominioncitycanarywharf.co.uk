@@ -1,71 +1,90 @@
 ---
-const heading = "Start your journey with us";
-const subtext = "Whether you're new to faith or deepening your walk, you're welcome at Dominion City Canary Wharf.";
 const worshipTime = "10AM every Sunday";
 const venue = "Hilton Canary Wharf";
 const postcode = "E14 9SH";
-const mapsUrl = "https://www.google.com/maps/search/?api=1&query=Hilton+Canary+Wharf+E14+9SH";
+const mapsUrl = "https://www.google.com/maps/search/?api=1&query=51.501112%2C-0.019892";
+
+// Exact coordinates: 51.501112, -0.019892 (Hilton Canary Wharf)
+const lat = 51.501112;
+const lon = -0.019892;
+const bbox = `${lon - 0.002},${lat - 0.001},${lon + 0.002},${lat + 0.001}`;
+const mapEmbedUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${encodeURIComponent(bbox)}&layer=mapnik&marker=${lat}%2C${lon}`;
+
+const ctaButtons = [
+  { label: "Join us Sunday", href: mapsUrl, primary: true },
+  { label: "Directions & Parking", href: mapsUrl, primary: false },
+  { label: "Connect with us", href: "#", primary: false },
+];
 ---
 
-<section id="connect" class="py-[var(--section-padding-y)] px-[var(--section-padding-x)] bg-dc-cream scroll-mt-20">
-  <div class="mx-auto max-w-[var(--content-max)]">
-    <div class="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-14 items-center">
-      <!-- Left: invitation + CTAs -->
-      <div class="lg:col-span-3 text-center lg:text-left">
-        <p class="text-sm uppercase tracking-[0.2em] text-dc-blue font-semibold mb-2">
-          You're invited
-        </p>
-        <h2 class="text-3xl font-bold text-[rgb(var(--dc-ink))] sm:text-4xl leading-tight">
-          {heading}
+<section id="connect" class="scroll-mt-20 bg-white border-b border-[rgb(var(--dc-blue))]/10">
+  <div class="mx-auto max-w-[var(--content-max)] py-[var(--section-padding-y)] px-[var(--section-padding-x)]">
+    <!-- 1:1 layout — info and map equal width -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-stretch">
+      <!-- Information (left) -->
+      <div class="flex flex-col justify-center order-2 lg:order-1">
+        <h2 class="text-2xl sm:text-3xl font-bold text-[rgb(var(--dc-ink))] tracking-tight">
+          JOIN US FOR CHURCH
         </h2>
-        <p class="mt-4 text-lg text-[rgb(var(--dc-ink))]/80 max-w-xl mx-auto lg:mx-0">
-          {subtext}
+        <p class="text-sm uppercase tracking-wider text-dc-blue font-semibold mt-3 mb-5">
+          Times &amp; Location
         </p>
-        <div class="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4">
-          <a
-            href={mapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center justify-center rounded-lg bg-dc-blue text-white px-6 py-3.5 text-base font-semibold shadow-md hover:bg-[rgb(25,48,120)] focus:outline-none focus:ring-2 focus:ring-dc-blue focus:ring-offset-2 focus:ring-offset-[rgb(var(--dc-cream))] transition-colors"
-          >
-            Join us Sunday
-          </a>
-          <a
-            href="#"
-            class="inline-flex items-center justify-center rounded-lg border-2 border-[rgb(var(--dc-ink))]/20 px-6 py-3.5 text-base font-semibold text-[rgb(var(--dc-ink))] hover:border-dc-blue hover:text-dc-blue focus:outline-none focus:ring-2 focus:ring-dc-blue focus:ring-offset-2 focus:ring-offset-[rgb(var(--dc-cream))] transition-colors"
-          >
-            Connect with us
-          </a>
+
+        <dl class="space-y-1 mb-6">
+          <div>
+            <dt class="sr-only">Time</dt>
+            <dd class="text-xl sm:text-2xl font-bold text-dc-blue">{worshipTime}</dd>
+          </div>
+          <div>
+            <dt class="sr-only">Venue</dt>
+            <dd class="text-lg font-medium text-[rgb(var(--dc-ink))]">{venue}</dd>
+          </div>
+          <div>
+            <dt class="sr-only">Postcode</dt>
+            <dd class="text-[rgb(var(--dc-ink))]/80">{postcode}</dd>
+          </div>
+        </dl>
+
+        <div class="flex flex-wrap gap-3 sm:gap-4">
+          {ctaButtons.map((btn) => (
+            <a
+              href={btn.href}
+              target={btn.href.startsWith('http') ? '_blank' : undefined}
+              rel={btn.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              class={
+                btn.primary
+                  ? "inline-flex items-center justify-center rounded-lg bg-dc-blue text-white px-6 py-3.5 text-base font-semibold shadow-md hover:bg-[rgb(25,48,120)] focus:outline-none focus:ring-2 focus:ring-dc-blue focus:ring-offset-2 transition-colors"
+                  : "inline-flex items-center justify-center rounded-lg border-2 border-[rgb(var(--dc-ink))]/20 px-6 py-3.5 text-base font-semibold text-[rgb(var(--dc-ink))] hover:border-dc-blue hover:text-dc-blue focus:outline-none focus:ring-2 focus:ring-dc-blue focus:ring-offset-2 transition-colors"
+              }
+            >
+              {btn.label}
+            </a>
+          ))}
         </div>
+
+        <p class="mt-6 text-[rgb(var(--dc-ink))]/70 text-sm">
+          Whether you're new to faith or deepening your walk, you're welcome at Dominion City Canary Wharf.
+        </p>
+
+        <p class="mt-4">
+          <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="text-sm text-dc-blue font-semibold hover:underline focus:outline-none focus:ring-2 focus:ring-dc-blue focus:ring-offset-2 rounded">
+            Open in Google Maps
+          </a>
+        </p>
       </div>
 
-      <!-- Right: time & place card -->
-      <div class="lg:col-span-2">
-        <article class="bg-white rounded-2xl shadow-lg border border-[rgb(var(--dc-blue))]/10 overflow-hidden">
-          <div class="p-6 sm:p-8">
-            <p class="text-xs uppercase tracking-wider text-[rgb(var(--dc-ink))]/60 font-semibold mb-3">
-              When & where
-            </p>
-            <p class="text-2xl font-bold text-dc-blue">
-              {worshipTime}
-            </p>
-            <p class="mt-2 text-lg font-medium text-[rgb(var(--dc-ink))]">
-              {venue}
-            </p>
-            <p class="mt-0.5 text-[rgb(var(--dc-ink))]/80">
-              {postcode}
-            </p>
-            <a
-              href={mapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="mt-5 inline-flex items-center gap-2 text-dc-blue font-semibold hover:underline focus:outline-none focus:ring-2 focus:ring-dc-blue focus:ring-offset-2 focus:ring-offset-white rounded"
-            >
-              <span aria-hidden="true">📍</span>
-              Get directions
-            </a>
-          </div>
-        </article>
+      <!-- Map (right) -->
+      <div class="min-h-[280px] lg:min-h-0 rounded-2xl overflow-hidden border border-[rgb(var(--dc-blue))]/15 shadow-lg bg-dc-cream flex flex-col order-1 lg:order-2">
+        <div class="flex-1 min-h-[240px] w-full">
+          <iframe
+            title="Map showing Hilton Canary Wharf, E14 9SH"
+            src={mapEmbedUrl}
+            class="w-full h-full min-h-[240px] border-0 block"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+          />
+        </div>
       </div>
     </div>
   </div>

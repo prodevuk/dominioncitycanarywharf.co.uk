@@ -3,20 +3,11 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import dcLogo from '../assets/images/dc_logo.png';
 
 const menuOpen = ref(false);
-const scrolledPastHero = ref(false);
 
-const navLinks = [
-  { href: '#vision', label: 'Our Vision' },
-  { href: '#about', label: 'About Us' },
-  { href: '#leadership', label: 'Leadership' },
-  { href: '#connect', label: 'Connect' },
+const navGroups = [
+  { label: 'Discover', links: [{ href: '#vision', label: 'Our Vision' }, { href: '#about', label: 'About Us' }] },
+  { label: 'Connect', links: [{ href: '#leadership', label: 'Leadership' }, { href: '#connect', label: 'Join Us' }] },
 ];
-
-function updateScrolledPastHero() {
-  // Hero is min-h-[85vh]; switch header when user has scrolled past most of it
-  const threshold = typeof window !== 'undefined' ? window.innerHeight * 0.8 : 0;
-  scrolledPastHero.value = window.scrollY >= threshold;
-}
 
 function toggleMenu() {
   menuOpen.value = !menuOpen.value;
@@ -32,24 +23,18 @@ function handleKeydown(e: KeyboardEvent) {
 
 onMounted(() => {
   document.addEventListener('keydown', handleKeydown);
-  updateScrolledPastHero();
-  window.addEventListener('scroll', updateScrolledPastHero, { passive: true });
 });
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown);
-  window.removeEventListener('scroll', updateScrolledPastHero);
 });
 </script>
 
 <template>
-  <header
-    class="fixed top-0 left-0 right-0 z-50 text-white transition-[background-color,box-shadow] duration-200"
-    :class="scrolledPastHero || menuOpen ? 'bg-dc-blue shadow-md' : 'bg-transparent shadow-none'"
-  >
+  <header class="relative z-50 bg-white text-[rgb(var(--dc-ink))] shadow-md">
     <div class="mx-auto flex max-w-[75rem] items-center justify-between gap-4 px-[var(--section-padding-x)] py-4">
       <a
         href="/"
-        class="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[rgb(30,58,138)] rounded"
+        class="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-dc-blue focus:ring-offset-2 focus:ring-offset-white rounded"
         aria-label="Dominion City Canary Wharf – Home"
       >
         <img
@@ -59,23 +44,29 @@ onUnmounted(() => {
           width="40"
           height="36"
         />
-        <span class="text-lg font-semibold tracking-tight">Dominion City Canary Wharf</span>
+        <span class="text-lg font-semibold tracking-tight text-dc-blue">Dominion City Canary Wharf</span>
       </a>
 
       <nav class="hidden md:flex md:items-center md:gap-8" aria-label="Main">
-        <a
-          v-for="link in navLinks"
-          :key="link.href"
-          :href="link.href"
-          class="text-white/95 hover:text-white font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[rgb(30,58,138)] rounded"
-        >
-          {{ link.label }}
-        </a>
+        <template v-for="(group, gi) in navGroups" :key="group.label">
+          <div v-if="gi > 0" class="w-px h-5 bg-[rgb(var(--dc-ink))]/20" aria-hidden="true" />
+          <div class="flex items-center gap-6">
+            <span class="text-xs uppercase tracking-wider text-[rgb(var(--dc-ink))]/60 font-semibold">{{ group.label }}</span>
+            <a
+              v-for="link in group.links"
+              :key="link.href"
+              :href="link.href"
+              class="text-[rgb(var(--dc-ink))]/90 hover:text-dc-blue font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-dc-blue focus:ring-offset-2 focus:ring-offset-white rounded"
+            >
+              {{ link.label }}
+            </a>
+          </div>
+        </template>
       </nav>
 
       <button
         type="button"
-        class="flex h-10 w-10 items-center justify-center rounded-md md:hidden text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white"
+        class="flex h-10 w-10 items-center justify-center rounded-md md:hidden text-[rgb(var(--dc-ink))] hover:bg-[rgb(var(--dc-ink))]/5 focus:outline-none focus:ring-2 focus:ring-dc-blue focus:ring-offset-2 focus:ring-offset-white"
         :aria-expanded="menuOpen"
         aria-controls="mobile-menu"
         aria-label="Toggle menu"
@@ -92,21 +83,24 @@ onUnmounted(() => {
 
     <div
       id="mobile-menu"
-      class="md:hidden border-t border-white/20 bg-dc-blue"
+      class="md:hidden border-t border-[rgb(var(--dc-ink))]/10 bg-[rgb(var(--dc-cream))]"
       :class="menuOpen ? 'block' : 'hidden'"
       role="dialog"
       aria-label="Mobile menu"
     >
       <nav class="flex flex-col gap-1 px-[var(--section-padding-x)] py-4" aria-label="Main">
-        <a
-          v-for="link in navLinks"
-          :key="link.href"
-          :href="link.href"
-          class="rounded-md px-3 py-2.5 text-white/95 hover:bg-white/10 hover:text-white font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-inset"
-          @click="closeMenu"
-        >
-          {{ link.label }}
-        </a>
+        <template v-for="group in navGroups" :key="group.label">
+          <p class="text-xs uppercase tracking-wider text-[rgb(var(--dc-ink))]/60 font-semibold mt-3 mb-1 first:mt-0">{{ group.label }}</p>
+          <a
+            v-for="link in group.links"
+            :key="link.href"
+            :href="link.href"
+            class="rounded-md px-3 py-2.5 text-[rgb(var(--dc-ink))]/90 hover:bg-white hover:text-dc-blue font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-dc-blue focus:ring-inset"
+            @click="closeMenu"
+          >
+            {{ link.label }}
+          </a>
+        </template>
       </nav>
     </div>
   </header>
