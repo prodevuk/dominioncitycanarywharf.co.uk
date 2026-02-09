@@ -9,6 +9,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: Build Astro Site
+    environment:
+      name: production
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -51,27 +53,6 @@ jobs:
       - name: Build Astro site
         run: yarn build
 
-      # Patch entry.mjs so client/server paths are resolved at runtime (not the build runner path)
-      - name: Patch server entry for deploy
-        run: |
-          f=dist/server/entry.mjs
-          sed -i 's|"client": "file://[^"]*",|"client": new URL("../client/", import.meta.url).href,|' "$f"
-          sed -i 's|"server": "file://[^"]*",|"server": new URL(".", import.meta.url).href,|' "$f"
-          grep -E '"client"|"server"' "$f" || true
-
-      # Passenger requires an index.html in the doc root; keep it minimal so proxy-to-Node can serve the real page
-      - name: Add root index.html for Apache/Passenger
-        run: |
-          printf '%s\n' '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body></body></html>' > dist/index.html
-
-      # Tell Phusion Passenger to run the Astro Node server (default is app.js)
-      - name: Add Passenger config for Node startup
-        run: |
-          echo '{"app_type":"node","startup_file":"server/entry.mjs"}' > dist/Passengerfile.json
-
-      - name: Include package.json in deploy
-        run: cp package.json dist/package.json
-
       - name: List output directory
         run: |
           ls -la
@@ -88,6 +69,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     name: Deploy via SFTP
+    environment:
+      name: production
     steps:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
@@ -95,7 +78,7 @@ jobs:
           name: build-files
           path: ./dist
 
-      - name: Deploy via SFTP to a Plesk server
+      - name: Deploy via SFTP
         uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.SFTP_HOST }}
