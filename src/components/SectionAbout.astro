@@ -1,0 +1,26 @@
+---
+const stats = [
+  { value: "5,000", label: "Thriving members" },
+  { value: "10,000", label: "Seat multi-complex" },
+  { value: "10M", label: "Lives to impact for Christ across the UK" },
+];
+---
+
+<section id="about" class="py-[var(--section-padding-y)] px-[var(--section-padding-x)] bg-white scroll-mt-20">
+  <div class="mx-auto max-w-[var(--content-max)]">
+    <h2 class="text-3xl font-bold text-dc-blue sm:text-4xl text-center mb-4">
+      A model church in the heart of the city
+    </h2>
+    <p class="text-center text-lg text-[rgb(var(--dc-ink))]/90 max-w-2xl mx-auto mb-14">
+      We equip every generation—babies, young and old—to excel in their divine calling, balancing the Spirit with leadership and societal impact.
+    </p>
+    <ul class="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 list-none p-0 m-0" role="list">
+      {stats.map(({ value, label }) => (
+        <li class="text-center p-6 rounded-xl bg-dc-cream border border-[rgb(var(--dc-blue))]/10">
+          <span class="block text-3xl sm:text-4xl font-bold text-dc-blue" aria-hidden="true">{value}</span>
+          <span class="mt-2 block text-[rgb(var(--dc-ink))]/80 font-medium">{label}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

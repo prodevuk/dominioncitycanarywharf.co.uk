@@ -1,0 +1,36 @@
+---
+const heading = "Start your journey with us";
+const subtext = "Whether you're new to faith or deepening your walk, you're welcome at Dominion City Canary Wharf.";
+const worshipTime = "10AM every Sunday";
+const venue = "Hilton Canary Wharf";
+const postcode = "E14 9SH";
+const mapsUrl = "https://www.google.com/maps/search/?api=1&query=Hilton+Canary+Wharf+E14+9SH";
+---
+
+<section id="connect" class="py-[var(--section-padding-y)] px-[var(--section-padding-x)] bg-dc-blue text-white scroll-mt-20">
+  <div class="mx-auto max-w-[var(--content-max)] text-center">
+    <h2 class="text-3xl font-bold sm:text-4xl">
+      {heading}
+    </h2>
+    <p class="mt-4 text-lg text-white/90 max-w-xl mx-auto">
+      {subtext}
+    </p>
+    <p class="mt-6 text-xl font-medium text-white">
+      {worshipTime} at <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="hover:no-underline focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[rgb(30,58,138)] rounded"><br/>📍 {venue} <br/> {postcode}</a>
+    </p>
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+      <a
+        href="#"
+        class="inline-flex items-center justify-center rounded-md bg-white px-6 py-3 text-base font-semibold text-dc-blue shadow-sm hover:bg-white/95 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[rgb(30,58,138)] transition-colors"
+      >
+        Join Us Sunday
+      </a>
+      <a
+        href="#"
+        class="inline-flex items-center justify-center rounded-md border-2 border-white px-6 py-3 text-base font-semibold text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[rgb(30,58,138)] transition-colors"
+      >
+        Connect with Us
+      </a>
+    </div>
+  </div>
+</section>

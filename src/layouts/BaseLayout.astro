@@ -1,0 +1,49 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Dominion City Canary Wharf – Raising leaders that transform society. A thriving church in Canary Wharf, London." } = Astro.props;
+
+const schemaOrg = {
+  '@context': 'https://schema.org',
+  '@type': 'Church',
+  name: 'Dominion City Canary Wharf',
+  description,
+  url: Astro.url.origin,
+  slogan: 'Raising Leaders that transform society',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Canary Wharf',
+    addressRegion: 'London',
+    addressCountry: 'GB',
+  },
+  areaServed: { '@type': 'Country', name: 'United Kingdom' },
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <!-- Fonts: Roboto & Oxygen (Segoe UI is system) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Oxygen:wght@400;700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script type="application/ld+json" set:html={JSON.stringify(schemaOrg)} />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">
+      Skip to main content
+    </a>
+    <slot />
+  </body>
+</html>

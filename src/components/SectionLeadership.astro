@@ -1,0 +1,29 @@
+---
+const leadPastor = {
+  name: "Pastor Chimdi",
+  role: "Lead Pastor",
+  // Placeholder for future image: /images/pastor-chimdi.jpg
+};
+---
+
+<section id="leadership" class="py-[var(--section-padding-y)] px-[var(--section-padding-x)] bg-dc-cream scroll-mt-20">
+  <div class="mx-auto max-w-[var(--content-max)]">
+    <h2 class="text-3xl font-bold text-dc-blue sm:text-4xl text-center mb-2">
+      Leadership
+    </h2>
+    <p class="text-center text-[rgb(var(--dc-ink))]/80 mb-12">
+      Under the mandate to raise kingdom-minded leaders
+    </p>
+    <div class="flex flex-col items-center max-w-md mx-auto text-center">
+      <div class="w-32 h-32 rounded-full bg-dc-blue/20 flex items-center justify-center mb-4" aria-hidden="true">
+        <span class="text-4xl font-bold text-dc-blue">{leadPastor.name.charAt(0)}</span>
+      </div>
+      <h3 class="text-xl font-semibold text-[rgb(var(--dc-ink))]">
+        {leadPastor.name}
+      </h3>
+      <p class="text-dc-blue font-medium">
+        {leadPastor.role}
+      </p>
+    </div>
+  </div>
+</section>

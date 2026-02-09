@@ -1,17 +1,26 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.vue';
+import HeroSlider from '../components/HeroSlider.vue';
+import VisionDeclaration from '../components/VisionDeclaration.astro';
+import SectionAbout from '../components/SectionAbout.astro';
+import SectionLeadership from '../components/SectionLeadership.astro';
+import SectionCTA from '../components/SectionCTA.astro';
+import Footer from '../components/Footer.astro';
+import yearOfEagleImage from '../assets/images/year_of_eagle.png';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Dominion City Canary Wharf | Raising Leaders that Transform Society"
+  description="Dominion City Canary Wharf is a model church in Canary Wharf, London—raising and transforming lives, equipping 5,000 members to excel in their divine calling and impact 10 million for Christ across the UK."
+>
+  <Header client:visible />
+  <main id="main-content">
+    <HeroSlider client:visible yearOfEagleSrc={typeof yearOfEagleImage === 'string' ? yearOfEagleImage : yearOfEagleImage.src} />
+    <VisionDeclaration />
+    <SectionAbout />
+    <SectionLeadership />
+    <SectionCTA />
+  </main>
+  <Footer />
+</BaseLayout>
