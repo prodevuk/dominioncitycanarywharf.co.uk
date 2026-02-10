@@ -10,7 +10,7 @@ const worshipTime = "10AM every Sunday";
 const venue = "Hilton Canary Wharf";
 const postcode = "E14 9SH";
 const mapsUrl = "https://www.google.com/maps/search/?api=1&query=Hilton+Canary+Wharf+E14+9SH";
-const contactEmail = "hello@dominioncitycanarywharf.co.uk";
+const contactEmail = "dccanarywharf26@gmail.com";
 
 const socialLinks = [
   { label: "Facebook", href: "https://www.facebook.com/profile.php?id=61586347899025", icon: "facebook" },
@@ -46,6 +46,8 @@ const socialLinks = [
                 href={item.href}
                 class="flex h-10 w-10 items-center justify-center rounded-full text-white/80 hover:bg-white/15 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[rgb(23,23,23)] transition-colors"
                 aria-label={item.label}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 {item.icon === "facebook" && (
                   <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

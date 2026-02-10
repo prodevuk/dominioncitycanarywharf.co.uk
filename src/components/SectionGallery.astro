@@ -18,7 +18,6 @@ const galleryImages = [
   { src: getSrc(yearOfEagleImage), alt: 'Our year of Dominion' },
 ];
 
-const totalPages = 3; // 4 images per page on lg: pages 0 (0-3), 1 (4-7), 2 (8-9)
 ---
 
 <section class="py-[var(--section-padding-y)] px-[var(--section-padding-x)] bg-white scroll-mt-20" aria-labelledby="gallery-heading">
@@ -30,92 +29,127 @@ const totalPages = 3; // 4 images per page on lg: pages 0 (0-3), 1 (4-7), 2 (8-9
       Moments from our community
     </p>
 
-    <!-- 4 square images visible on lg; sliding track -->
-    <div class="gallery-carousel relative w-full overflow-hidden rounded-2xl bg-[rgb(var(--dc-ink))]/5" aria-label="Photo gallery carousel">
-      <!-- Container: 4:1 aspect so 4 squares fit (each square = 1 unit) -->
-      <div class="relative w-full pt-[25%]">
+    <!-- Responsive carousel: 1-up mobile, 2-up sm, 4-up lg -->
+    <div
+      class="gallery-carousel relative w-full overflow-hidden rounded-2xl bg-[rgb(var(--dc-ink))]/5 [--per-view:1] sm:[--per-view:2] lg:[--per-view:4]"
+      aria-label="Photo gallery carousel"
+    >
+      <div class="gallery-viewport relative w-full overflow-hidden">
         <div
-          class="gallery-track absolute top-0 left-0 flex h-full w-[250%] transition-transform duration-500 ease-out"
+          class="gallery-track flex transition-transform duration-500 ease-out"
           style="transform: translateX(0)"
         >
           {galleryImages.map((image, index) => (
-            <div class="gallery-cell flex-[0_0_10%] h-full p-1 sm:p-2">
-              <div class="h-full w-full overflow-hidden rounded-lg bg-[rgb(var(--dc-ink))]/10 aspect-square">
+            <div class="gallery-cell shrink-0 p-1.5 sm:p-2" style="flex: 0 0 calc(100% / var(--per-view));">
+              <div class="aspect-square w-full overflow-hidden rounded-xl bg-[rgb(var(--dc-ink))]/10">
                 <img
                   src={image.src}
                   alt={image.alt}
                   class="h-full w-full object-cover block"
-                  width="400"
-                  height="400"
+                  width="600"
+                  height="600"
                   loading={index < 4 ? 'eager' : 'lazy'}
                 />
               </div>
             </div>
           ))}
         </div>
-
-        {galleryImages.length > 1 && (
-          <>
-            <button
-              type="button"
-              class="gallery-prev absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full p-2 bg-white/90 text-[rgb(var(--dc-ink))] shadow-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-dc-blue focus:ring-offset-2 transition-colors"
-              aria-label="Previous"
-            >
-              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              class="gallery-next absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full p-2 bg-white/90 text-[rgb(var(--dc-ink))] shadow-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-dc-blue focus:ring-offset-2 transition-colors"
-              aria-label="Next"
-            >
-              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-
-            <div class="gallery-dots absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-2" role="tablist" aria-label="Gallery pages">
-              {Array.from({ length: totalPages }).map((_, index) => (
-                <button
-                  type="button"
-                  class="gallery-dot h-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[rgb(var(--dc-ink))]/30"
-                  style={index === 0 ? 'background: rgb(30 58 138); width: 1.5rem' : 'background: rgba(30,58,138,0.3); width: 0.5rem'}
-                  aria-label={`Page ${index + 1}`}
-                  aria-selected={index === 0}
-                  role="tab"
-                  data-index={index}
-                />
-              ))}
-            </div>
-          </>
-        )}
       </div>
+
+      <!-- Controls are toggled by JS based on pages -->
+      <button
+        type="button"
+        class="gallery-prev absolute left-2 sm:left-3 top-1/2 z-10 -translate-y-1/2 rounded-full p-2 sm:p-2.5 bg-white/90 text-[rgb(var(--dc-ink))] shadow-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-dc-blue focus:ring-offset-2 transition-colors"
+        aria-label="Previous"
+      >
+        <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="gallery-next absolute right-2 sm:right-3 top-1/2 z-10 -translate-y-1/2 rounded-full p-2 sm:p-2.5 bg-white/90 text-[rgb(var(--dc-ink))] shadow-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-dc-blue focus:ring-offset-2 transition-colors"
+        aria-label="Next"
+      >
+        <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
+      <div class="gallery-dots absolute bottom-3 sm:bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2" role="tablist" aria-label="Gallery pages" />
     </div>
   </div>
 </section>
 
-<script define:vars={{ totalPages }}>
+<script>
   (function () {
     const container = document.querySelector('.gallery-carousel');
-    if (!container) return;
+    if (!(container instanceof HTMLElement)) return;
+    const containerEl = container;
 
-    const track = container.querySelector('.gallery-track');
-    const dots = container.querySelectorAll('.gallery-dot');
-    const nextBtn = container.querySelector('.gallery-next');
-    const prevBtn = container.querySelector('.gallery-prev');
-    if (!track) return;
+    const track = containerEl.querySelector('.gallery-track');
+    const dotsWrap = containerEl.querySelector<HTMLElement>('.gallery-dots');
+    const nextBtn = containerEl.querySelector<HTMLButtonElement>('.gallery-next');
+    const prevBtn = containerEl.querySelector<HTMLButtonElement>('.gallery-prev');
+    if (!(track instanceof HTMLElement)) return;
+    const trackEl = track;
 
+    const slidesCount = trackEl.querySelectorAll('.gallery-cell').length;
     let currentPage = 0;
+    let totalPages = 0;
 
-    function goToPage(page) {
-      currentPage = (page + totalPages) % totalPages;
-      track.style.transform = `translateX(-${currentPage * 100}%)`;
+    function getPerView() {
+      const raw = getComputedStyle(containerEl).getPropertyValue('--per-view').trim();
+      const parsed = Number.parseInt(raw || '1', 10);
+      return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+    }
+
+    function computePages() {
+      const perView = getPerView();
+      totalPages = Math.max(1, Math.ceil(slidesCount / perView));
+    }
+
+    function setControlsVisibility() {
+      const show = totalPages > 1;
+      if (prevBtn) prevBtn.style.display = show ? '' : 'none';
+      if (nextBtn) nextBtn.style.display = show ? '' : 'none';
+      if (dotsWrap) dotsWrap.style.display = show ? 'flex' : 'none';
+    }
+
+    function rebuildDots() {
+      if (!dotsWrap) return;
+      dotsWrap.innerHTML = '';
+      for (let i = 0; i < totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className =
+          'gallery-dot h-2 sm:h-2.5 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[rgb(var(--dc-ink))]/30';
+        btn.setAttribute('aria-label', `Page ${i + 1}`);
+        btn.setAttribute('role', 'tab');
+        btn.dataset.index = String(i);
+        btn.addEventListener('click', () => goToPage(i));
+        dotsWrap.appendChild(btn);
+      }
+    }
+
+    function updateDots() {
+      if (!dotsWrap) return;
+      const dots = dotsWrap.querySelectorAll<HTMLButtonElement>('.gallery-dot');
       dots.forEach((el, i) => {
         el.style.background = i === currentPage ? 'rgb(30 58 138)' : 'rgba(30,58,138,0.3)';
         el.style.width = i === currentPage ? '1.5rem' : '0.5rem';
         el.setAttribute('aria-selected', i === currentPage ? 'true' : 'false');
       });
+    }
+
+    function clampPage(page: number) {
+      return totalPages <= 1 ? 0 : (page + totalPages) % totalPages;
+    }
+
+    function goToPage(page: number) {
+      currentPage = clampPage(page);
+      trackEl.style.transform = `translateX(-${currentPage * 100}%)`;
+      updateDots();
       resetTimer();
     }
 
@@ -123,18 +157,31 @@ const totalPages = 3; // 4 images per page on lg: pages 0 (0-3), 1 (4-7), 2 (8-9
       goToPage(currentPage + 1);
     }
 
-    let timer = null;
+    let timer: ReturnType<typeof setInterval> | null = null;
     function resetTimer() {
       if (timer) clearInterval(timer);
       if (totalPages > 1) timer = setInterval(next, 5000);
     }
 
+    function initOrUpdate() {
+      const prevPages = totalPages;
+      computePages();
+
+      if (totalPages !== prevPages) {
+        currentPage = clampPage(currentPage);
+        rebuildDots();
+      }
+
+      setControlsVisibility();
+      goToPage(currentPage);
+    }
+
     prevBtn?.addEventListener('click', () => goToPage(currentPage - 1));
     nextBtn?.addEventListener('click', () => goToPage(currentPage + 1));
-    dots.forEach((dot, i) => {
-      dot.addEventListener('click', () => goToPage(i));
-    });
 
-    resetTimer();
+    // Recompute pages when breakpoints change
+    window.addEventListener('resize', () => initOrUpdate(), { passive: true });
+
+    initOrUpdate();
   })();
 </script>

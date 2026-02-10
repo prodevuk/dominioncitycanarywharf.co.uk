@@ -14,11 +14,6 @@ const slides = computed(() => [
     subtitle: 'Raising Leaders that transform society',
     location: 'Canary Wharf, London',
   },
-  {
-    type: 'image',
-    image: props.yearOfEagleSrc,
-    alt: '2026 The year of the Eagle, Our year of Dominion',
-  },
 ]);
 
 const current = ref(0);
@@ -129,45 +124,47 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Prev / Next -->
-    <button
-      type="button"
-      class="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full p-2 text-white/90 hover:bg-white/15 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[rgb(30,58,138)] transition-colors"
-      aria-label="Previous slide"
-      @click="prev"
-    >
-      <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-      </svg>
-    </button>
-    <button
-      type="button"
-      class="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full p-2 text-white/90 hover:bg-white/15 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[rgb(30,58,138)] transition-colors"
-      aria-label="Next slide"
-      @click="next"
-    >
-      <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-      </svg>
-    </button>
-
-    <!-- Dots -->
-    <div
-      class="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 gap-2"
-      role="tablist"
-      aria-label="Slide navigation"
-    >
+    <!-- Prev / Next (hidden when only one slide) -->
+    <template v-if="slidesLength > 1">
       <button
-        v-for="(_, index) in slides"
-        :key="index"
         type="button"
-        class="h-2.5 w-2.5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[rgb(30,58,138)]"
-        :class="index === current ? 'bg-white' : 'bg-white/50 hover:bg-white/70'"
-        :aria-label="`Go to slide ${index + 1}`"
-        :aria-selected="index === current"
-        role="tab"
-        @click="goTo(index)"
-      />
-    </div>
+        class="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full p-2 text-white/90 hover:bg-white/15 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[rgb(30,58,138)] transition-colors"
+        aria-label="Previous slide"
+        @click="prev"
+      >
+        <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full p-2 text-white/90 hover:bg-white/15 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[rgb(30,58,138)] transition-colors"
+        aria-label="Next slide"
+        @click="next"
+      >
+        <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
+      <!-- Dots -->
+      <div
+        class="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 gap-2"
+        role="tablist"
+        aria-label="Slide navigation"
+      >
+        <button
+          v-for="(_, index) in slides"
+          :key="index"
+          type="button"
+          class="h-2.5 w-2.5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[rgb(30,58,138)]"
+          :class="index === current ? 'bg-white' : 'bg-white/50 hover:bg-white/70'"
+          :aria-label="`Go to slide ${index + 1}`"
+          :aria-selected="index === current"
+          role="tab"
+          @click="goTo(index)"
+        />
+      </div>
+    </template>
   </section>
 </template>
