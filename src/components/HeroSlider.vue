@@ -12,7 +12,10 @@ const slides = computed(() => [
     eyebrow: 'Dominion City · Canary Wharf',
     title: 'We are Dominion City',
     subtitle: 'Raising Leaders that transform society',
-    location: 'Canary Wharf, London',
+    venueName: 'Hilton London Canary Wharf',
+    streetAddress: 'South Quay, Marsh Wall',
+    city: 'London',
+    postcode: 'E14 9SH',
   },
 ]);
 
@@ -78,9 +81,11 @@ onUnmounted(() => {
           <p class="mt-6 text-xl sm:text-2xl text-white/95 font-medium max-w-2xl mx-auto">
             {{ slide.subtitle }}
           </p>
-          <p class="mt-4 text-white/80">
-            {{ slide.location }}
-          </p>
+          <address class="mt-4 text-white/80 not-italic">
+            <span class="block">{{ slide.venueName }}</span>
+            <span class="block">{{ slide.streetAddress }}</span>
+            <span class="block">{{ slide.city }}, {{ slide.postcode }}</span>
+          </address>
           <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
               href="#vision"
